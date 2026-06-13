@@ -48,7 +48,11 @@ jobs:
 
       - name: Build installer
         run: |
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DBuildDir="build\Release" installer\FrameProbe.iss
+          # Inno Setup resolves [Files] Source paths relative to the .iss file's
+          # folder, so BuildDir must be absolute (a relative "build\Release" would
+          # be looked up under installer\).
+          $BuildDir = (Resolve-Path "build\Release").Path
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DBuildDir="$BuildDir" installer\FrameProbe.iss
 
       - name: Stage portable package
         shell: pwsh
