@@ -29,7 +29,7 @@ namespace fp {
 constexpr wchar_t kAppName[]   = L"FrameProbe";
 constexpr wchar_t kAppTagline[] = L"Windows Frame-Time Interference Diagnostic";
 constexpr wchar_t kWatermark[] = L"geovie";
-constexpr wchar_t kVersion[]   = L"1.0.0";
+constexpr wchar_t kVersion[]   = L"1.0.1";
 
 // ---------------------------------------------------------------------------
 // Configuration captured from the user before a test run. Mirrors the
