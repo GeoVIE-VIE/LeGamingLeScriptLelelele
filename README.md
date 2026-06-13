@@ -93,7 +93,23 @@ least privilege by default.
 - Subprocess output is size-capped; all format strings are literals (user text
   is only ever passed as data).
 
-## Building
+## Getting it (prebuilt installer)
+
+You don't need a compiler. Every push runs the **`build`** GitHub Actions
+workflow on a Windows runner, which compiles FrameProbe with MSVC and packages
+it two ways:
+
+- **`FrameProbeSetup.exe`** — an Inno Setup installer (Start-menu shortcut,
+  optional desktop icon, clean uninstall). Installs per-user with no admin
+  prompt by default.
+- **`FrameProbe-portable.zip`** — just the `.exe` + `tools\`, run-from-anywhere.
+
+Grab them from the workflow run's **Artifacts**, or from the **Releases** page
+when a `v*` tag is pushed (the workflow attaches both automatically). The CI
+also bundles PresentMon into the package, so frame-time capture works out of
+the box.
+
+## Building from source
 
 Requires Windows + Visual Studio 2019/2022 (or Build Tools) and CMake ≥ 3.16.
 
@@ -104,6 +120,16 @@ cmake --build build --config Release
 
 The result is `build\Release\FrameProbe.exe` — a self-contained GUI executable
 (Win32 + GDI+ + PDH, no third-party runtime dependencies).
+
+### Packaging the installer locally
+
+With [Inno Setup 6](https://jrsoftware.org/isdl.php) installed:
+
+```bat
+"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DBuildDir="build\Release" installer\FrameProbe.iss
+```
+
+This produces `installer\FrameProbeSetup.exe`.
 
 ## Enabling frame-time capture
 
