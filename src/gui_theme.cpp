@@ -6,28 +6,30 @@ using namespace Gdiplus;
 
 namespace fp {
 
-static GraphicsPath MakeRoundPath(const RectF& r, float radius) {
-    GraphicsPath p;
+// GraphicsPath's copy ctor is protected, so it cannot be returned by value.
+// Build into a caller-owned path instead.
+static void MakeRoundPath(GraphicsPath& p, const RectF& r, float radius) {
     float d = radius * 2.0f;
     if (d > r.Width)  d = r.Width;
     if (d > r.Height) d = r.Height;
-    if (d <= 0.5f) { p.AddRectangle(r); return p; }
+    if (d <= 0.5f) { p.AddRectangle(r); return; }
     p.AddArc(r.X, r.Y, d, d, 180, 90);
     p.AddArc(r.GetRight() - d, r.Y, d, d, 270, 90);
     p.AddArc(r.GetRight() - d, r.GetBottom() - d, d, d, 0, 90);
     p.AddArc(r.X, r.GetBottom() - d, d, d, 90, 90);
     p.CloseFigure();
-    return p;
 }
 
 void FillRoundRect(Graphics& g, const RectF& r, float radius, const Color& fill) {
-    GraphicsPath p = MakeRoundPath(r, radius);
+    GraphicsPath p;
+    MakeRoundPath(p, r, radius);
     SolidBrush b(fill);
     g.FillPath(&b, &p);
 }
 
 void StrokeRoundRect(Graphics& g, const RectF& r, float radius, const Color& color, float width) {
-    GraphicsPath p = MakeRoundPath(r, radius);
+    GraphicsPath p;
+    MakeRoundPath(p, r, radius);
     Pen pen(color, width);
     g.DrawPath(&pen, &p);
 }
@@ -64,7 +66,8 @@ void DrawBar(Graphics& g, const RectF& r, double value, double maxVal, const Col
               (BYTE)std::min(255, color.GetG() + 40),
               (BYTE)std::min(255, color.GetB() + 40)),
         LinearGradientModeHorizontal);
-    GraphicsPath p = MakeRoundPath(fillR, fillR.Height / 2.0f);
+    GraphicsPath p;
+    MakeRoundPath(p, fillR, fillR.Height / 2.0f);
     g.FillPath(&grad, &p);
 }
 

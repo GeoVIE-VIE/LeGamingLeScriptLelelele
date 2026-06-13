@@ -15,6 +15,8 @@
 
 #include <commctrl.h>
 #include <windowsx.h>
+#include <shellapi.h>  // ShellExecuteW (WIN32_LEAN_AND_MEAN omits it)
+#include <objidl.h>   // IStream etc. - GDI+ needs it (WIN32_LEAN_AND_MEAN omits it)
 #include <gdiplus.h>
 #include <algorithm>
 #include <deque>

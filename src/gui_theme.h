@@ -6,6 +6,7 @@
 //
 #pragma once
 #include "common.h"
+#include <objidl.h>   // IStream etc. - GDI+ needs it (WIN32_LEAN_AND_MEAN omits it)
 #include <gdiplus.h>
 #include <deque>
 
